@@ -1,0 +1,218 @@
+using UnityEngine;
+using TMPro;
+using UnityEngine.UI;
+
+/// <summary>
+/// Represents the player character, handling health, UI updates, and combat mechanics.
+/// </summary>
+public class Player : Character
+{
+    /// <summary>Displays the player's health.</summary>
+    public TMP_Text healthText;
+
+    /// <summary>Displays the enemy's health.</summary>
+    public TMP_Text enemyHealthText;
+
+    /// <summary>Reference to Enemy 1.</summary>
+    public Enemy enemy1;  
+
+    /// <summary>Reference to Enemy 2.</summary>
+    public Enemy enemy2;  
+
+    /// <summary>The currently active enemy.</summary>
+    private Enemy currentEnemy;
+
+    /// <summary>Attack button in the UI.</summary>
+    public Button attackButton;
+
+    /// <summary>Shield activation button.</summary>
+    public Button shieldButton;
+
+    /// <summary>Healing buff activation button.</summary>
+    public Button healButton;
+
+    /// <summary>Damage buff activation button.</summary>
+    public Button damageBuffButton;
+
+    /// <summary>UI panel for player status.</summary>
+    public GameObject PanelUI;
+
+    private bool shieldActive = false;
+    private bool damageBuffActive = false;
+
+    /// <summary>Multiplier for damage calculation.</summary>
+    public float damageMultiplier = 1f;
+
+    /// <summary>Base attack damage.</summary>
+    public int baseDamage = 10;
+
+    /// <summary>Manages player's displayed name.</summary>
+    public PlayerNameManager nameManager;
+
+    /// <summary>
+    /// Initializes the player, setting up UI and activating the first enemy.
+    /// </summary>
+    void Start()
+    {
+        if (enemy1 != null) enemy1.gameObject.SetActive(false);
+        if (enemy2 != null) enemy2.gameObject.SetActive(false);
+
+        if (enemy1 != null)
+        {
+            SetCurrentEnemy(enemy1);
+        }
+
+        attackButton?.onClick.AddListener(AttackButtonClicked);
+        shieldButton?.onClick.AddListener(ToggleShield);
+        healButton?.onClick.AddListener(ActivateHealingBuff);
+        damageBuffButton?.onClick.AddListener(ActivateDamageBuff);
+
+        if (nameManager == null)
+        {
+            nameManager = GetComponent<PlayerNameManager>();
+        }
+    }
+
+    /// <summary>
+    /// Handles the attack action, dealing damage to the enemy.
+    /// </summary>
+    private void AttackButtonClicked()
+    {
+        if (currentEnemy == null) return;
+
+        int damage = (int)(baseDamage * damageMultiplier);
+        Debug.Log($"Player attacks for {damage} damage!");
+
+        currentEnemy.TakeDamage(damage);
+        UpdateEnemyUI();
+
+        if (currentEnemy.health <= 0)
+        {
+            OnEnemyDefeated();
+        }
+        else
+        {
+            EnemyRetaliation();
+        }
+    }
+
+    /// <summary>
+    /// Allows the enemy to retaliate after an attack.
+    /// </summary>
+    private void EnemyRetaliation()
+    {
+        if (currentEnemy == null) return;
+
+        int retaliationDamage = 5;
+        Debug.Log($"Enemy retaliates for {retaliationDamage} damage!");
+
+        TakeDamage(retaliationDamage);
+        UpdateUI();
+
+        if (health <= 0)
+        {
+            health = 0;
+            PanelUI.SetActive(false);
+            Debug.Log("Player is dead");
+        }
+    }
+
+    /// <summary>
+    /// Reduces player health when taking damage.
+    /// </summary>
+    /// <param name="damage">Amount of damage received.</param>
+    public new void TakeDamage(int damage)
+    {
+        health -= damage;
+        if (health <= 0)
+        {
+            health = 0;
+            Debug.Log("Player died!");
+        }
+        UpdateUI();
+    }
+
+    /// <summary>
+    /// Toggles shield activation.
+    /// </summary>
+    private void ToggleShield()
+    {
+        shieldActive = !shieldActive;
+        Debug.Log($"Shield is now {(shieldActive ? "ON" : "OFF")}");
+    }
+
+    /// <summary>
+    /// Restores health using a healing buff.
+    /// </summary>
+    private void ActivateHealingBuff()
+    {
+        health = Mathf.Min(health + 20, 100);
+        Debug.Log("Healing buff activated! +20 health.");
+        UpdateUI();
+    }
+
+    /// <summary>
+    /// Toggles damage buff activation.
+    /// </summary>
+    private void ActivateDamageBuff()
+    {
+        damageBuffActive = !damageBuffActive;
+        damageMultiplier = damageBuffActive ? 3f : 1f;
+        Debug.Log($"Damage Buff is now {(damageBuffActive ? "ACTIVE (x3 damage)" : "INACTIVE")}");
+    }
+
+    /// <summary>
+    /// Sets the current enemy and updates UI.
+    /// </summary>
+    /// <param name="enemy">The enemy to set as active.</param>
+    public void SetCurrentEnemy(Enemy enemy)
+    {
+        if (enemy == null) return;
+
+        currentEnemy = enemy;
+        currentEnemy.gameObject.SetActive(true);
+        UpdateEnemyUI();
+    }
+
+    /// <summary>
+    /// Updates the displayed enemy health UI.
+    /// </summary>
+    public void UpdateEnemyUI()
+    {
+        if (currentEnemy != null && enemyHealthText != null)
+        {
+            enemyHealthText.text = $"Enemy Health: {currentEnemy.health}";
+        }
+    }
+
+    /// <summary>
+    /// Updates the player's health UI.
+    /// </summary>
+    private void UpdateUI()
+    {
+        if (healthText != null)
+        {
+            healthText.text = $"Health: {health}";
+        }
+    }
+
+    /// <summary>
+    /// Handles enemy defeat and determines next actions.
+    /// </summary>
+    public void OnEnemyDefeated()
+    {
+        if (currentEnemy != null)
+        {
+            currentEnemy.gameObject.SetActive(false);
+        }
+
+        if (currentEnemy == enemy1 && enemy2 != null)
+        {
+            SetCurrentEnemy(enemy2);
+        }
+        else if (currentEnemy == enemy2)
+        {
+            Debug.Log("You won the game!");
+        }
+    }
+}
