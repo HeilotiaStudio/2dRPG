@@ -649,6 +649,139 @@
                         </div>
                     </div>
                 </section>
+
+                <!-- Inheritance Hierarchy Section -->
+<section id="inheritance" class="section">
+    <div class="section-header">
+        <div class="section-icon">
+            <i class="fas fa-project-diagram"></i>
+        </div>
+        <h2 class="section-title">Inheritance Hierarchy</h2>
+    </div>
+    
+    <div class="diagram" style="text-align: center; padding: 2rem;">
+        <div style="display: inline-flex; flex-direction: column; align-items: center; gap: 0;">
+            <!-- Character Base Class -->
+            <div style="background: linear-gradient(135deg, #2c3e50, #34495e); 
+                        color: white; padding: 20px 40px; border-radius: 10px; 
+                        width: 350px; border: 3px solid #3498db;">
+                <h3 style="margin: 0 0 10px 0;">
+                    <i class="fas fa-chess-king"></i> Character
+                </h3>
+                <p style="margin: 5px 0; font-size: 0.9em; opacity: 0.9;">
+                    <strong>Abstract Base Class</strong>
+                </p>
+                <div style="margin-top: 15px; text-align: left; background: rgba(0,0,0,0.3); 
+                            padding: 10px; border-radius: 5px;">
+                    <p style="margin: 5px 0;"><strong>Properties:</strong></p>
+                    <ul style="margin: 5px 0; padding-left: 20px; font-size: 0.9em;">
+                        <li>health (protected)</li>
+                        <li>maxHealth (protected)</li>
+                        <li>Health (public readonly)</li>
+                        <li>IsDead (public readonly)</li>
+                    </ul>
+                    <p style="margin: 10px 0 5px 0;"><strong>Methods:</strong></p>
+                    <ul style="margin: 5px 0; padding-left: 20px; font-size: 0.9em;">
+                        <li>TakeDamage(int)</li>
+                        <li>Heal(int)</li>
+                        <li>Die()</li>
+                        <li>ResetCharacter()</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Inheritance Arrow -->
+            <div style="font-size: 2rem; color: #3498db; margin: 20px 0;">
+                <i class="fas fa-arrow-down"></i> Inherits from
+            </div>
+            
+            <!-- Player Class -->
+            <div style="background: linear-gradient(135deg, #2563eb, #7c3aed); 
+                        color: white; padding: 25px 50px; border-radius: 10px; 
+                        width: 400px; border: 3px solid #8b5cf6; position: relative;">
+                <div style="position: absolute; top: -15px; left: 50%; transform: translateX(-50%); 
+                            background: #8b5cf6; padding: 5px 20px; border-radius: 20px; 
+                            font-size: 0.9em;">
+                    <i class="fas fa-user"></i> Player Class
+                </div>
+                <h3 style="margin: 10px 0;">Player : Character</h3>
+                <p style="margin: 5px 0; font-size: 0.9em; opacity: 0.9;">
+                    <strong>Concrete Implementation</strong>
+                </p>
+                <div style="margin-top: 20px; text-align: left;">
+                    <p><strong>New Properties:</strong></p>
+                    <ul style="margin: 5px 0 15px 0; padding-left: 20px;">
+                        <li>healthText (TMP_Text)</li>
+                        <li>enemyHealthText (TMP_Text)</li>
+                        <li>damageMultiplier (float)</li>
+                        <li>baseDamage (int)</li>
+                        <li>currentEnemy (Enemy)</li>
+                    </ul>
+                    
+                    <p><strong>Overrides & Extends:</strong></p>
+                    <ul style="margin: 5px 0 15px 0; padding-left: 20px;">
+                        <li><strong>new</strong> TakeDamage(int) - Adds UI updates</li>
+                        <li>Adds combat system methods</li>
+                        <li>Adds buff system methods</li>
+                        <li>Adds enemy management</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Relationship to Enemy -->
+            <div style="margin-top: 30px; display: flex; align-items: center; gap: 30px; 
+                        justify-content: center; flex-wrap: wrap;">
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <div style="background: #e74c3c; color: white; padding: 10px 20px; 
+                                border-radius: 8px; font-weight: bold;">
+                        <i class="fas fa-robot"></i> Enemy Class
+                    </div>
+                    <div>
+                        <i class="fas fa-exchange-alt" style="color: #f1c40f;"></i>
+                    </div>
+                    <div style="background: #2ecc71; color: white; padding: 10px 20px; 
+                                border-radius: 8px; font-weight: bold;">
+                        <i class="fas fa-user"></i> Player Class
+                    </div>
+                </div>
+                <div style="color: #95a5a6; font-style: italic; text-align: center;">
+                    <p>Enemy also inherits from Character</p>
+                    <p>Combat interaction through Player class</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card">
+        <div class="card-content">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-code-branch"></i> Inheritance Notes
+            </h3>
+            
+            <div class="grid-2" style="margin-top: 20px;">
+                <div class="property">
+                    <h4 class="property-name">Method Hiding</h4>
+                    <p>Player uses <code>new void TakeDamage()</code> to hide the base implementation and add UI updates.</p>
+                </div>
+                
+                <div class="property">
+                    <h4 class="property-name">Virtual Methods</h4>
+                    <p>Character's <code>TakeDamage()</code> and <code>Die()</code> are <code>virtual</code> for easy overriding.</p>
+                </div>
+                
+                <div class="property">
+                    <h4 class="property-name">Protected Members</h4>
+                    <p><code>health</code> and <code>maxHealth</code> are <code>protected</code> for derived class access.</p>
+                </div>
+                
+                <div class="property">
+                    <h4 class="property-name">Abstract vs Concrete</h4>
+                    <p>Character is designed as a base class; Player adds concrete combat implementation.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
                 
                 <!-- Example Usage Section -->
                 <section id="example" class="section">
@@ -846,6 +979,7 @@
     </script>
 </body>
 </html>
+
 
 
 
