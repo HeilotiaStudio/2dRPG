@@ -432,7 +432,7 @@
                             <p>Here's how to use the Player class in a GameManager or other controller:</p>
 
 <div class="code-block">
-<pre><span class="keyword">using</span> UnityEngine;
+    <pre><span class="keyword">using</span> UnityEngine;
 
 <span class="comment">// 1. Define the base Character class (abstract)</span>
 <span class="keyword">public abstract class</span> <span class="class">Character</span> : <span class="class">MonoBehaviour</span>
@@ -445,10 +445,11 @@
         health -= damage;
         <span class="class">Debug</span>.<span class="method">Log</span>($<span class="string">"Base: Took {damage} damage"</span>);
     }
-}
+}</pre>
 </div>
-    <div class="code-block">                        
-<span class="comment">// 2. Player inherits from Character</span>
+
+<div class="code-block">
+    <pre><span class="comment">// 2. Player inherits from Character</span>
 <span class="keyword">public class</span> <span class="class">Player</span> : <span class="class">Character</span>
 {
     <span class="comment">// Hides base method with new implementation</span>
@@ -468,10 +469,11 @@
         <span class="comment">// Has access to protected 'health' field</span>
         <span class="class">Debug</span>.<span class="method">Log</span>($<span class="string">"Player health: {health}"</span>);
     }
-}
+}</pre>
 </div>
-        <div class="code-block">                       
-<span class="comment">// 3. Usage example</span>
+
+<div class="code-block">
+    <pre><span class="comment">// 3. Usage example</span>
 <span class="keyword">public class</span> <span class="class">GameManager</span> : <span class="class">MonoBehaviour</span>
 {
     <span class="keyword">void</span> <span class="method">Start</span>()
@@ -500,7 +502,6 @@
     }
 }</pre>
 </div>
-                            
                             
                             <div class="code-block">
                                 <pre><span class="keyword">using</span> UnityEngine;
@@ -685,6 +686,7 @@
     </script>
 </body>
 </html>
+
 
 
 
