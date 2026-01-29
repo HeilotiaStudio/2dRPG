@@ -1,3 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Player Class Documentation - Unity Combat System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #7c3aed;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --info: #3b82f6;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #e2e8f0;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            padding: 3rem 2rem;
+            border-radius: 20px;
+            margin-bottom: 2rem;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+            opacity: 0.1;
+        }
+        
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, #fff, #c7d2fe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .subtitle {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .tech-stack {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .tech-badge {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 8px 20px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .content-grid {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .sidebar {
+            background: rgba(30, 41, 59, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+        }
+        
+        .sidebar h3 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .nav-list {
+            list-style: none;
+        }
+        
+        .nav-list li {
+            margin-bottom: 12px;
+        }
+        
+        .nav-list a {
+            color: #cbd5e1;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-list a:hover {
+            background: rgba(59, 130, 246, 0.2);
+            color: white;
+            transform: translateX(5px);
+        }
+        
+        .nav-list a.active {
+            background: var(--primary);
+            color: white;
+            font-weight: 500;
+        }
+        
+        .main-content {
+            background: rgba(30, 41, 59, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .section {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 2rem;
+        }
+        
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+        
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(to right, #fff, #93c5fd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .card {
+            background: rgba(15, 23, 42, 0.6);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--primary);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #fff;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .access-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .public { background: var(--success); }
+        .private { background: var(--danger); }
+        .protected { background: var(--warning); }
+        
+        .card-content {
+            color: #cbd5e1;
+        }
+        
+        .summary {
+            background: rgba(16, 185, 129, 0.1);
+            border-left: 3px solid var(--success);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .params {
+            margin-top: 1rem;
+            padding-left: 1.5rem;
+        }
+        
+        .param-item {
+            margin-bottom: 8px;
+            display: flex;
+            gap: 10px;
+        }
+        
+        .param-name {
+            color: var(--warning);
+            font-weight: 500;
+            font-family: 'Courier New', monospace;
+            min-width: 100px;
+        }
+        
+        .param-desc {
+            color: #94a3b8;
+        }
+        
+        .code-block {
+            background: #0f172a;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            overflow-x: auto;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .code-block pre {
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #e2e8f0;
+        }
+        
+        .keyword { color: #f472b6; }
+        .class { color: #60a5fa; }
+        .method { color: #34d399; }
+        .string { color: #fbbf24; }
+        .comment { color: #94a3b8; }
+        .number { color: #a78bfa; }
+        
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        footer {
+            margin-top: 3rem;
+            text-align: center;
+            padding: 2rem;
+            color: #94a3b8;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        @media (max-width: 1024px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                position: static;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .header {
+                padding: 2rem 1rem;
+            }
+            
+            .main-content {
+                padding: 1.5rem;
+            }
+            
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .copy-button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 1rem;
+            transition: background 0.3s ease;
+        }
+        
+        .copy-button:hover {
+            background: #1d4ed8;
+        }
+        
+        .diagram {
+            background: rgba(15, 23, 42, 0.8);
+            padding: 2rem;
+            border-radius: 12px;
+            margin: 2rem 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <h1><i class="fas fa-gamepad"></i> Player Class</h1>
+                <p class="subtitle">A comprehensive Unity C# implementation for player character management in a combat system. Handles health, UI, combat mechanics, enemy interactions, and buff systems.</p>
+                
+                <div class="tech-stack">
+                    <div class="tech-badge"><i class="fab fa-unity"></i> Unity Engine</div>
+                    <div class="tech-badge"><i class="fas fa-code"></i> C# Scripting</div>
+                    <div class="tech-badge"><i class="fas fa-heart"></i> Health System</div>
+                    <div class="tech-badge"><i class="fas fa-crosshairs"></i> Combat Mechanics</div>
+                    <div class="tech-badge"><i class="fas fa-shield-alt"></i> Buff System</div>
+                </div>
+            </div>
+        </header>
+        
+        <div class="content-grid">
+            <aside class="sidebar">
+                <h3><i class="fas fa-bars"></i> Navigation</h3>
+                <ul class="nav-list">
+                    <li><a href="#overview" class="active"><i class="fas fa-home"></i> Overview</a></li>
+                    <li><a href="#properties"><i class="fas fa-cube"></i> Properties</a></li>
+                    <li><a href="#methods"><i class="fas fa-cogs"></i> Methods</a></li>
+                    <li><a href="#inheritance"><i class="fas fa-project-diagram"></i> Inheritance</a></li>
+                    <li><a href="#example"><i class="fas fa-code"></i> Example Usage</a></li>
+                    <li><a href="#flow"><i class="fas fa-sitemap"></i> Flow Diagram</a></li>
+                </ul>
+                
+                <h3 style="margin-top: 2rem;"><i class="fas fa-info-circle"></i> Class Info</h3>
+                <div class="card">
+                    <div class="card-content">
+                        <p><strong>Namespace:</strong> <span class="keyword">UnityEngine</span></p>
+                        <p><strong>Assembly:</strong> Assembly-CSharp</p>
+                        <p><strong>Inheritance:</strong> Character → Player</p>
+                        <p><strong>Access:</strong> <span class="access-badge public">Public</span></p>
+                        <p><strong>Category:</strong> Combat System</p>
+                    </div>
+                </div>
+            </aside>
+            
+            <main class="main-content">
+                <!-- Overview Section -->
+                <section id="overview" class="section">
+                    <div class="section-header">
+                        <div class="section-icon">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                        <h2 class="section-title">Class Overview</h2>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-content">
+                            <div class="summary">
+                                <strong><i class="fas fa-quote-left"></i> Summary:</strong> 
+                                Represents the player character, handling health, UI updates, and combat mechanics. Manages enemy interactions, buff systems (shield, healing, damage), and controls the flow of combat through a turn-based system.
+                            </div>
+                            
+                            <p>The <strong>Player</strong> class is the core of the player-controlled character in a Unity combat system. It extends the base <span class="class">Character</span> class and adds specific functionality for:</p>
+                            
+                            <ul style="margin: 1rem 0 1rem 2rem;">
+                                <li>Health management and UI updates</li>
+                                <li>Combat mechanics (attacks, damage calculation)</li>
+                                <li>Enemy targeting and switching</li>
+                                <li>Buff system (shield, healing, damage boosts)</li>
+                                <li>Game state management (victory/defeat conditions)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Properties Section -->
+                <section id="properties" class="section">
+                    <div class="section-header">
+                        <div class="section-icon">
+                            <i class="fas fa-cube"></i>
+                        </div>
+                        <h2 class="section-title">Properties & Fields</h2>
+                    </div>
+                    
+                    <div class="grid-2">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">healthText</div>
+                                <span class="access-badge public">Public</span>
+                            </div>
+                            <div class="card-content">
+                                <p><strong>Type:</strong> <span class="class">TMP_Text</span></p>
+                                <p>Displays the player's health in the UI using TextMeshPro.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">enemyHealthText</div>
+                                <span class="access-badge public">Public</span>
+                            </div>
+                            <div class="card-content">
+                                <p><strong>Type:</strong> <span class="class">TMP_Text</span></p>
+                                <p>Displays the current enemy's health in the UI.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">enemy1, enemy2</div>
+                                <span class="access-badge public">Public</span>
+                            </div>
+                            <div class="card-content">
+                                <p><strong>Type:</strong> <span class="class">Enemy</span></p>
+                                <p>References to enemy objects in the scene. enemy1 is activated first.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">currentEnemy</div>
+                                <span class="access-badge private">Private</span>
+                            </div>
+                            <div class="card-content">
+                                <p><strong>Type:</strong> <span class="class">Enemy</span></p>
+                                <p>The currently active enemy being targeted.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">damageMultiplier</div>
+                                <span class="access-badge public">Public</span>
+                            </div>
+                            <div class="card-content">
+                                <p><strong>Type:</strong> <span class="keyword">float</span></p>
+                                <p>Multiplier for damage calculation. Can be boosted to 3x with damage buff.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">baseDamage</div>
+                                <span class="access-badge public">Public</span>
+                            </div>
+                            <div class="card-content">
+                                <p><strong>Type:</strong> <span class="keyword">int</span></p>
+                                <p>Base attack damage before multipliers (default: 10).</p>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">shieldActive</div>
+                                <span class="access-badge private">Private</span>
+                            </div>
+                            <div class="card-content">
+                                <p><strong>Type:</strong> <span class="keyword">bool</span></p>
+                                <p>Tracks if the shield buff is currently active.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">damageBuffActive</div>
+                                <span class="access-badge private">Private</span>
+                            </div>
+                            <div class="card-content">
+                                <p><strong>Type:</strong> <span class="keyword">bool</span></p>
+                                <p>Tracks if the damage buff is currently active (3x multiplier).</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Methods Section -->
+                <section id="methods" class="section">
+                    <div class="section-header">
+                        <div class="section-icon">
+                            <i class="fas fa-cogs"></i>
+                        </div>
+                        <h2 class="section-title">Methods</h2>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Start()</div>
+                            <span class="access-badge public">Public</span>
+                        </div>
+                        <div class="card-content">
+                            <div class="summary">
+                                <strong><i class="fas fa-play"></i> Initializes the player, setting up UI and activating the first enemy.</strong>
+                            </div>
+                            <p>Unity's initialization method. Sets up button listeners, initializes enemies, and prepares the combat system.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">TakeDamage(int damage)</div>
+                            <span class="access-badge public">Public</span>
+                        </div>
+                        <div class="card-content">
+                            <div class="summary">
+                                <strong><i class="fas fa-heart-broken"></i> Reduces player health when taking damage.</strong>
+                            </div>
+                            <div class="params">
+                                <div class="param-item">
+                                    <span class="param-name">damage</span>
+                                    <span class="param-desc">Amount of damage received from enemy attacks</span>
+                                </div>
+                            </div>
+                            <p>Decreases health and updates UI. If health reaches 0, player dies and UI is disabled.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">AttackButtonClicked()</div>
+                            <span class="access-badge private">Private</span>
+                        </div>
+                        <div class="card-content">
+                            <div class="summary">
+                                <strong><i class="fas fa-fist-raised"></i> Handles the attack action, dealing damage to the enemy.</strong>
+                            </div>
+                            <p>Calculates damage using baseDamage and damageMultiplier, applies it to current enemy, and triggers enemy retaliation.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">ToggleShield()</div>
+                            <span class="access-badge private">Private</span>
+                        </div>
+                        <div class="card-content">
+                            <div class="summary">
+                                <strong><i class="fas fa-shield-alt"></i> Toggles shield activation.</strong>
+                            </div>
+                            <p>Activates or deactivates the shield buff. When active, should reduce incoming damage (implementation needed).</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">ActivateHealingBuff()</div>
+                            <span class="access-badge private">Private</span>
+                        </div>
+                        <div class="card-content">
+                            <div class="summary">
+                                <strong><i class="fas fa-heart"></i> Restores health using a healing buff.</strong>
+                            </div>
+                            <p>Heals the player by 20 health points (up to maximum of 100). Updates health UI immediately.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">ActivateDamageBuff()</div>
+                            <span class="access-badge private">Private</span>
+                        </div>
+                        <div class="card-content">
+                            <div class="summary">
+                                <strong><i class="fas fa-bolt"></i> Toggles damage buff activation.</strong>
+                            </div>
+                            <p>Sets damageMultiplier to 3.0 when active, or 1.0 when inactive. Greatly increases attack power.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">OnEnemyDefeated()</div>
+                            <span class="access-badge public">Public</span>
+                        </div>
+                        <div class="card-content">
+                            <div class="summary">
+                                <strong><i class="fas fa-trophy"></i> Handles enemy defeat and determines next actions.</strong>
+                            </div>
+                            <p>When enemy1 is defeated, activates enemy2. When enemy2 is defeated, declares victory.</p>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Example Usage Section -->
+                <section id="example" class="section">
+                    <div class="section-header">
+                        <div class="section-icon">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <h2 class="section-title">Example Usage</h2>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-content">
+                            <p>Here's how to use the Player class in a GameManager or other controller:</p>
+                            
+                            <div class="code-block">
+                                <pre><span class="keyword">using</span> UnityEngine;
+<span class="keyword">using</span> TMPro;
+
+<span class="keyword">public class</span> <span class="class">GameController</span> : <span class="class">MonoBehaviour</span>
+{
+    <span class="keyword">public</span> <span class="class">Player</span> player;
+    <span class="keyword">public</span> <span class="class">Enemy</span> enemy1, enemy2;
+    <span class="keyword">public</span> <span class="class">TMP_Text</span> gameStatusText;
+    
+    <span class="keyword">void</span> <span class="method">Start</span>()
+    {
+        <span class="comment">// Set up player references</span>
+        player.enemy1 = enemy1;
+        player.enemy2 = enemy2;
+        
+        <span class="comment">// Initialize UI</span>
+        player.UpdateUI();
+        player.UpdateEnemyUI();
+        
+        <span class="comment">// Simulate game events</span>
+        <span class="method">StartCoroutine</span>(<span class="method">GameSequence</span>());
+    }
+    
+    <span class="class">IEnumerator</span> <span class="method">GameSequence</span>()
+    {
+        <span class="comment">// Player attacks first enemy</span>
+        <span class="method">yield return new</span> <span class="class">WaitForSeconds</span>(1);
+        player.<span class="method">AttackButtonClicked</span>();
+        
+        <span class="comment">// Player activates shield</span>
+        <span class="method">yield return new</span> <span class="class">WaitForSeconds</span>(0.5);
+        player.<span class="method">ToggleShield</span>();
+        
+        <span class="comment">// Player uses healing buff when low health</span>
+        <span class="method">yield return new</span> <span class="class">WaitForSeconds</span>(1);
+        player.<span class="method">ActivateHealingBuff</span>();
+        
+        <span class="comment">// Activate damage buff for powerful attack</span>
+        player.<span class="method">ActivateDamageBuff</span>();
+        <span class="method">yield return new</span> <span class="class">WaitForSeconds</span>(0.5);
+        player.<span class="method">AttackButtonClicked</span>();
+    }
+}</pre>
+                            </div>
+                            
+                            <button class="copy-button" onclick="copyCode()">
+                                <i class="fas fa-copy"></i> Copy Example Code
+                            </button>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Flow Diagram Section -->
+                <section id="flow" class="section">
+                    <div class="section-header">
+                        <div class="section-icon">
+                            <i class="fas fa-sitemap"></i>
+                        </div>
+                        <h2 class="section-title">Combat Flow</h2>
+                    </div>
+                    
+                    <div class="diagram">
+                        <div style="text-align: center; margin-bottom: 2rem;">
+                            <h3 style="color: #60a5fa; margin-bottom: 1rem;">Player Combat Sequence</h3>
+                            <div style="display: inline-flex; flex-direction: column; align-items: center; gap: 1.5rem;">
+                                <div style="background: var(--primary); color: white; padding: 15px 30px; border-radius: 8px; width: 300px;">
+                                    <strong>1. Combat Start</strong><br>
+                                    Initialize enemies and UI
+                                </div>
+                                <div style="font-size: 2rem; color: var(--success);">↓</div>
+                                <div style="background: var(--warning); color: white; padding: 15px 30px; border-radius: 8px; width: 300px;">
+                                    <strong>2. Player Turn</strong><br>
+                                    Choose: Attack, Shield, Heal, or Damage Buff
+                                </div>
+                                <div style="font-size: 2rem; color: var(--success);">↓</div>
+                                <div style="background: var(--danger); color: white; padding: 15px 30px; border-radius: 8px; width: 300px;">
+                                    <strong>3. Enemy Retaliation</strong><br>
+                                    Enemy counter-attacks (if alive)
+                                </div>
+                                <div style="font-size: 2rem; color: var(--success);">↓</div>
+                                <div style="background: var(--info); color: white; padding: 15px 30px; border-radius: 8px; width: 300px;">
+                                    <strong>4. Check Conditions</strong><br>
+                                    Enemy defeated? Switch or win
+                                </div>
+                                <div style="font-size: 2rem; color: var(--success);">↓</div>
+                                <div style="background: var(--success); color: white; padding: 15px 30px; border-radius: 8px; width: 300px;">
+                                    <strong>5. Repeat or End</strong><br>
+                                    Continue combat or declare victory
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+        
+        <footer>
+            <p><i class="fas fa-code-branch"></i> Player Class Documentation | Unity Combat System</p>
+            <p style="margin-top: 1rem; font-size: 0.9rem; color: #64748b;">
+                Generated from C# source code | Last updated: <span id="currentDate"></span>
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        // Set current date
+        document.getElementById('currentDate').textContent = new Date().toLocaleDateString('en-US', {
+            year: 'numeric', month: 'long', day: 'numeric'
+        });
+        
+        // Smooth scrolling for navigation
+        document.querySelectorAll('.nav-list a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Remove active class from all links
+                document.querySelectorAll('.nav-list a').forEach(link => {
+                    link.classList.remove('active');
+                });
+                
+                // Add active class to clicked link
+                this.classList.add('active');
+                
+                // Scroll to section
+                const targetId = this.getAttribute('href');
+                const targetSection = document.querySelector(targetId);
+                if (targetSection) {
+                    window.scrollTo({
+                        top: targetSection.offsetTop - 20,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Copy code function
+        function copyCode() {
+            const codeElement = document.querySelector('.code-block pre');
+            const textArea = document.createElement('textarea');
+            textArea.value = codeElement.textContent;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+            
+            // Show feedback
+            const button = document.querySelector('.copy-button');
+            const originalText = button.innerHTML;
+            button.innerHTML = '<i class="fas fa-check"></i> Copied!';
+            button.style.background = 'var(--success)';
+            
+            setTimeout(() => {
+                button.innerHTML = originalText;
+                button.style.background = '';
+            }, 2000);
+        }
+        
+        // Highlight current section in navigation
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('.section');
+            const navLinks = document.querySelectorAll('.nav-list a');
+            
+            let currentSection = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (scrollY >= sectionTop - 100) {
+                    currentSection = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + currentSection) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
 
 
 
