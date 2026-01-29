@@ -780,7 +780,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>  
 </section>
                 
                 <!-- Example Usage Section -->
@@ -795,6 +795,75 @@
                     <div class="card">
                         <div class="card-content">
                             <p>Here's how to use the Player class in a GameManager or other controller:</p>
+
+<div class="code-block">
+<pre><span class="keyword">using</span> UnityEngine;
+
+<span class="comment">// 1. Define the base Character class (abstract)</span>
+<span class="keyword">public abstract class</span> <span class="class">Character</span> : <span class="class">MonoBehaviour</span>
+{
+    <span class="keyword">protected int</span> health = 100;
+    <span class="keyword">public int</span> <span class="method">Health</span> => health;
+    
+    <span class="keyword">public virtual void</span> <span class="method">TakeDamage</span>(<span class="keyword">int</span> damage)
+    {
+        health -= damage;
+        <span class="class">Debug</span>.<span class="method">Log</span>($<span class="string">"Base: Took {damage} damage"</span>);
+    }
+}
+
+<span class="comment">// 2. Player inherits from Character</span>
+<span class="keyword">public class</span> <span class="class">Player</span> : <span class="class">Character</span>
+{
+    <span class="comment">// Hides base method with new implementation</span>
+    <span class="keyword">public new void</span> <span class="method">TakeDamage</span>(<span class="keyword">int</span> damage)
+    {
+        <span class="class">Debug</span>.<span class="method">Log</span>(<span class="string">"Player: Updating UI before taking damage"</span>);
+        
+        <span class="comment">// Can still call base method if needed</span>
+        <span class="keyword">base</span>.<span class="method">TakeDamage</span>(damage);
+        
+        <span class="comment">// Player-specific logic</span>
+        <span class="class">Debug</span>.<span class="method">Log</span>(<span class="string">"Player: Updating health display"</span>);
+    }
+    
+    <span class="keyword">public void</span> <span class="method">SpecialAttack</span>()
+    {
+        <span class="comment">// Has access to protected 'health' field</span>
+        <span class="class">Debug</span>.<span class="method">Log</span>($<span class="string">"Player health: {health}"</span>);
+    }
+}
+
+<span class="comment">// 3. Usage example</span>
+<span class="keyword">public class</span> <span class="class">GameManager</span> : <span class="class">MonoBehaviour</span>
+{
+    <span class="keyword">void</span> <span class="method">Start</span>()
+    {
+        <span class="comment">// Create player (inherits from Character)</span>
+        <span class="class">Player</span> player = <span class="keyword">new</span> <span class="class">Player</span>();
+        
+        <span class="comment">// Can access Character properties</span>
+        <span class="keyword">int</span> playerHealth = player.<span class="method">Health</span>; <span class="comment">// From Character</span>
+        
+        <span class="comment">// Calls Player's TakeDamage (hides Character's)</span>
+        player.<span class="method">TakeDamage</span>(20);
+        
+        <span class="comment">// Player-specific method</span>
+        player.<span class="method">SpecialAttack</span>();
+        
+        <span class="comment">// Polymorphism example</span>
+        <span class="class">Character</span> characterRef = player; <span class="comment">// Upcasting</span>
+        characterRef.<span class="method">TakeDamage</span>(10); <span class="comment">// Calls Character's version!</span>
+        
+        <span class="comment">// Downcasting back to Player</span>
+        <span class="keyword">if</span> (characterRef <span class="keyword">is</span> <span class="class">Player</span> p)
+        {
+            p.<span class="method">SpecialAttack</span>(); <span class="comment">// Now we can use Player methods</span>
+        }
+    }
+}</pre>
+</div>
+                            
                             
                             <div class="code-block">
                                 <pre><span class="keyword">using</span> UnityEngine;
@@ -979,6 +1048,7 @@
     </script>
 </body>
 </html>
+
 
 
 
