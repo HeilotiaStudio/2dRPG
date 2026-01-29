@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?
+ <?xml version="1.0" encoding="UTF-8" ?>
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
@@ -217,3 +217,4 @@ public class Player : Character
         }
     }
 }
+
