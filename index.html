@@ -13,19 +13,36 @@
         h1 {
             color: #333;
         }
-        iframe {
+        pre {
             width: 80%;
-            height: 600px;
-            border: 1px solid #ccc;
+            margin: 0 auto;
+            text-align: left;
             background: #fff;
+            padding: 20px;
+            border: 1px solid #ccc;
+            overflow: auto;
+            white-space: pre-wrap;
         }
     </style>
 </head>
 <body>
     <h1>Player Class Documentation</h1>
     
-    <iframe src="player.xml"></iframe>
+    <div id="xml-content">Loading XML...</div>
 
-    <p>If the documentation doesn't load, make sure <strong>player.xml</strong> is in the same folder and accessible.</p>
+    <script>
+        // Fetch and display the XML as text
+        fetch('player.xml')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('xml-content').innerHTML = 
+                    '<pre>' + data.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</pre>';
+            })
+            .catch(error => {
+                document.getElementById('xml-content').innerHTML = 
+                    'Error loading XML: ' + error;
+            });
+    </script>
 </body>
 </html>
+
