@@ -1,5 +1,4 @@
- <style>
-        :root {
+ :root {
             --primary: #2563eb;
             --secondary: #7c3aed;
             --dark: #1e293b;
@@ -363,4 +362,4 @@
             margin: 2rem 0;
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
-    </style>
+    
