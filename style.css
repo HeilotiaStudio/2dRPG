@@ -14,7 +14,15 @@
             padding: 0;
             box-sizing: border-box;
         }
-        
+
+/* Syntax highlighting - CRITICAL for code colors */
+.keyword { color: #f472b6; }
+.class { color: #60a5fa; }
+.method { color: #34d399; }
+.string { color: #fbbf24; }
+.comment { color: #94a3b8; }
+.number { color: #a78bfa; }
+
         body {
             font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
             background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
